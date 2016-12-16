@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pop-up-layer</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="pop.js"></script>
+    <link rel="stylesheet" href="pop.css"/>
+</head>
+<body>
+
+<div>
+    <button class="pop">click1</button>
+</div>
+<p>下面还有一个按钮，点击弹出第二个弹出层</p>
+<div style="margin-top:900px;height:800px;">
+    <button class="pop">click2</button>
+</div>
+<!--以上是文档内容-->
+
+<!--以下是弹窗内容-->
+
+<div id="pop-bg"></div>
+<div class="pop-show">
+    <header>
+        <p>弹出层标题11</p>
+        <i class="pop-close">×</i>
+    </header>
+    <div class="pop-body">
+        <p>这是一个弹出层，您可以编辑弹出层内容</p>
+        <h3>第一个</h3>
+    </div>
+</div>
+<div class="pop-show">
+    <header>
+        <p>弹出层标题22</p>
+        <i class="pop-close">×</i>
+    </header>
+    <div class="pop-body">
+        <p>这是一个弹出层，您可以编辑弹出层内容</p>
+        <h3>第一个</h3>
+    </div>
+</div>
+</body>
+</html>
