@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用css画的一些几何图形</title>
+	<style>
+		.triangle{
+			width:0;
+			height:0;
+			border-bottom: 100px solid #000;
+			border-left:50px solid transparent;
+			border-right: 50px solid transparent;
+		}
+		.oval{
+			width:120px;
+			height:80px;
+			border-radius: 50%;
+			border: 2px solid #000;
+		}
+		
+		 
+		.heart {
+		    position: relative;
+		    width: 100px;
+		    height: 90px;
+		}
+		.heart:before,.heart:after {
+		    position: absolute;
+		    content: "";
+		    left: 50px;
+		    top: 0;
+		    width: 50px;
+		    height: 80px;
+		    background: red;
+		    -moz-border-radius: 50px 50px 0 0;
+		    border-radius: 50px 50px 0 0;
+		    -webkit-transform: rotate(-45deg);
+		       -moz-transform: rotate(-45deg);
+		        -ms-transform: rotate(-45deg);
+		         -o-transform: rotate(-45deg);
+		            transform: rotate(-45deg);
+		    -webkit-transform-origin: 0 100%;
+		       -moz-transform-origin: 0 100%;
+		        -ms-transform-origin: 0 100%;
+		         -o-transform-origin: 0 100%;
+		            transform-origin: 0 100%;
+		}
+		.heart:after {
+		    left: 0;
+		    -webkit-transform: rotate(45deg);
+		       -moz-transform: rotate(45deg);
+		        -ms-transform: rotate(45deg);
+		         -o-transform: rotate(45deg);
+		            transform: rotate(45deg);
+		    -webkit-transform-origin: 100% 100%;
+		       -moz-transform-origin: 100% 100%;
+		        -ms-transform-origin: 100% 100%;
+		         -o-transform-origin: 100% 100%;
+		            transform-origin :100% 100%;
+		}
+		.halfPx1 {
+		    position: relative;
+		    width: 200px;
+			height: 20px;
+		}
+
+		.halfPx1:before {
+		    content: '';
+		    position: absolute;
+		    width: 200%;
+		    height: 200%;
+		    border: 1px solid #f00;
+		    -webkit-transform-origin: 0 0;
+		    -moz-transform-origin: 0 0;
+		    -ms-transform-origin: 0 0;
+		    -o-transform-origin: 0 0;
+		    transform-origin: 0 0;
+		    -webkit-transform: scale(0.5, 0.5);
+		    -ms-transform: scale(0.5, 0.5);
+		    -o-transform: scale(0.5, 0.5);
+		    transform: scale(0.5, 0.5);
+		    -webkit-box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    box-sizing: border-box;
+		}
+		div{
+			margin: 50px;
+		}
+		.halfPx2{
+			width: 200px;
+			height: 20px;
+			box-shadow:0.5px 0.5px #f00 ,0.5px 0.5px #f00 inset
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="triangle">
+		<!-- 三角形 -->
+	</div>
+	<div class="oval">
+		<!--椭圆-->
+	</div>
+	<div class="heart">
+		<!--心形-->
+	</div>
+
+
+
+	<div style="margin-top: 10px;border:1px solid #f00;width: 200px; height: 20px;">
+		1px 红色的边框
+	</div>
+	<div class="halfPx1">
+	0.5px 边框（方式1）
+	</div>
+	<!-- 利用CSS3的新特性画 -->
+	<div class="halfPx2">
+	0.5px 红色的边框（方式2 css3）
+	</div>
+</body>
+</html>
