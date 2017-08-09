@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div{
+			border: 8px solid #666666;
+			position: absolute;
+			box-sizing: border-box;
+		}
+		.body{
+			height:350px;
+			width: 500px;
+
+		}
+		.door{
+			height:200px;
+			width:110px;
+		}
+		.window{
+			height: 60px;
+			width: 60px;
+		}
+		.roof{
+			border-bottom: 150px solid #666666;
+			border-left: 250px solid transparent;
+			border-right: 250px solid transparent;
+			border-top: none;
+
+		}
+	</style>
+</head>
+<body>
+	<!-- 组建房子的材料，包括房子主体，窗户，门，屋顶 -->
+	<div class="body draggable"></div>
+	<div class="draggable window"></div>
+	<div class="draggable window"></div>
+	<div class="draggable window"></div>
+	<div class="draggable window"></div>
+	<div class="draggable door"></div>
+	<div class="draggable roof"></div>
+
+	<script>
+		//自定义事件所在对象的构造函数
+		function EventTarget(){
+			this.handlers = {};  //用于储存事件处理程序
+		}
+		EventTarget.prototype = {
+			constructor: EventTarget,
+			//给某事件添加事件处理程序
+			addHandler: function(type,handler){
+				if(typeof this.handlers[type] == "undefined"){
+					this.handlers[type] = [];
+				}
+
+				this.handlers[type].push(handler);
+			},
+			//触发事件
+			fire: function(event){
+				if(!event.target){
+					event.target = this;
+				}
+				if(this.handlers[event.type] instanceof Array){
+					var handlers = this.handlers[event.type];
+					for(var i=0;i<handlers.length;i++){
+						handlers[i](event);   //调用相应的事件处理函数
+					}
+				}
+			},
+			//移除事件处理程序
+			removeHandler: function(type,handler){
+				if(this.handlers[type] instanceof Array){
+					var handlers = this.handlers[type];
+
+					for(var i=0;i<handlers.length;i++){
+						if(handlers[i] === handler){
+							break;
+						}
+					}
+
+					handlers.splice(i,1);  //将指定位置的处理程序删除
+				}
+			}
+		};
+
+		//一个对象，封装了若干兼容各个浏览器、与事件相关的方法
+		var EventUtil = {
+			addHandler: function(element,type,handler){
+				if(element.addEventListener){  //DOM2级
+					element.addEventListener(type,handler,false);
+				} else if(element.attachEvent) {  //IE
+					element.attachEvent("on"+type,handler);
+				} else {      //DOM0级
+					element["on"+type] = handler;
+				}
+			},			
+			getEvent:function(event){
+				return event?event:window.event; //IE
+			},
+			getTarget: function(event){
+				return event.target || event.srcElement; //IE
+			},
+			preventDefault: function(event){
+				if(event.preventDefault){
+					event.preventDefault();
+				} else {
+					event.return.value = false;   //IE
+				}
+			},
+			removeHandler: function(element,type){
+				if(element.removeHandler){
+					element.removeHandler(type,handler,false);
+				} else if (element.detachEvent) {
+					element.detachEvent("on"+type,handler);
+				} else{
+					element["on"+type] = null
+				}
+			},
+			stopPropagation: function(event){
+				if(event.stopPropagation){
+					event.stopPropagation();
+				} else {
+					event.cancelBubble = true;     //IE
+				}
+			}
+		}
+		function DragDrop(){
+			var dragging = null,   //拖动的DOM对象
+				diffX = 0,diffY = 0,
+				dragEvent = new EventTarget();
+
+			dragEvent.addHandler("dragstart",function(event){
+				console.log("监听到拖动开始！");
+			});
+			function handlerEvent(event){
+				//获取事件和目标
+				event = EventUtil.getEvent(event);
+				var target = EventUtil.getTarget(event);
+
+				switch(event.type){
+					case "mousedown":
+						if(target.className.indexOf("draggable")>-1){
+							dragging = target;
+							dragEvent.fire({type:"dragstart",target:dragging});
+							diffX = event.clientX - target.offsetLeft;
+							diffY = event.clientY - target.offsetTop;
+						}
+						break;
+						case "mousemove":
+							if(dragging !== null){
+								dragEvent.fire({type:"drag",target:dragging});
+								target.style.left = (event.clientX-diffX) + "px";
+								target.style.top = (event.clientY-diffY) + "px";
+							}
+							break;
+						case "mouseup":
+							dragEvent.fire({type:"dragend",target:dragging});
+							dragging = null;
+							break;
+				}
+			};
+			return {
+				enable: function(){
+					EventUtil.addHandler(document,"mousedown",handlerEvent);
+					EventUtil.addHandler(document,"mousemove",handlerEvent);
+					EventUtil.addHandler(document,"mouseup",handlerEvent);
+				},
+				disable: function(){
+					EventUtil.removeHandler(document,"mousedown",handlerEvent);
+					EventUtil.removeHandler(document,"mousemove",handlerEvent);
+					EventUtil.removeHandler(document,"mouseup",handlerEvent);
+				}
+			}
+		}
+		
+		var DragBall = DragDrop();
+		DragBall.enable();
+	</script>
+</body>
+</html>
